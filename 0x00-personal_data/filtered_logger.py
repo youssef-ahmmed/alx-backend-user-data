@@ -2,12 +2,12 @@
 """Regex-ing"""
 import logging
 import re
-from typing import Tuple, Sequence
+from typing import Tuple, List
 
 PII_FIELDS: Tuple = ("name", "email", "phone", "ssn", "password")
 
 
-def filter_datum(fields: Sequence[str], redaction: str,
+def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
     """Returns the log message obfuscated"""
     return re.sub(r'(\w+)=([^{}]+)'.format(separator),
@@ -39,7 +39,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields: Sequence[str]):
+    def __init__(self, fields: List[str]):
         """Call super formatter"""
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
