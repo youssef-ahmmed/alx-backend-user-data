@@ -3,11 +3,10 @@
 import logging
 import os
 import re
-from typing import Tuple, List, Union
+from typing import Tuple, List
 
 import mysql.connector
 from mysql.connector.connection import MySQLConnection
-from mysql.connector.pooling import PooledMySQLConnection
 
 PII_FIELDS: Tuple = ("name", "email", "phone", "ssn", "password")
 
@@ -35,7 +34,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> Union[MySQLConnection, PooledMySQLConnection]:
+def get_db() -> MySQLConnection:
     """Get the db parameters from env variables"""
     db = mysql.connector.connect(
         host=os.getenv("PERSONAL_DATA_DB_HOST", "localhost"),
@@ -46,6 +45,22 @@ def get_db() -> Union[MySQLConnection, PooledMySQLConnection]:
     )
 
     return db
+
+
+def main() -> None:
+    """Entry point for logging application"""
+    logger = get_logger()
+
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+    result = cursor.fetchall()
+
+    for row in result:
+        logger.info(row)
+
+    cursor.close()
+    db.close()
 
 
 class RedactingFormatter(logging.Formatter):
@@ -65,3 +80,7 @@ class RedactingFormatter(logging.Formatter):
         """Format log record"""
         msg = logging.Formatter(self.FORMAT).format(record)
         return filter_datum(self.fields, self.REDACTION, msg, self.SEPARATOR)
+
+
+if __name__ == '__main__':
+    main()
