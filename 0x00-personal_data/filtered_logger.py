@@ -53,11 +53,16 @@ def main() -> None:
 
     db = get_db()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM users;")
-    result = cursor.fetchall()
 
-    for row in result:
-        logger.info(row)
+    cursor.execute("SELECT * FROM users;")
+    users = cursor.fetchall()
+
+    column_names = cursor.column_names
+
+    for user in users:
+        formatted_user = "".join(f"{attribute}={value}; " for
+                                 attribute, value in zip(column_names, user))
+        logger.info(formatted_user)
 
     cursor.close()
     db.close()
