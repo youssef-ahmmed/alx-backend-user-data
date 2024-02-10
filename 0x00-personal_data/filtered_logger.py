@@ -3,10 +3,11 @@
 import logging
 import os
 import re
-from typing import Tuple, List
+from typing import Tuple, List, Union
 
 import mysql.connector
 from mysql.connector.connection import MySQLConnection
+from mysql.connector.pooling import PooledMySQLConnection
 
 PII_FIELDS: Tuple = ("name", "email", "phone", "ssn", "password")
 
@@ -34,7 +35,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> MySQLConnection:
+def get_db() -> Union[MySQLConnection, PooledMySQLConnection]:
     """Get the db parameters from env variables"""
     db = mysql.connector.connect(
         host=os.getenv("PERSONAL_DATA_DB_HOST", "localhost"),
