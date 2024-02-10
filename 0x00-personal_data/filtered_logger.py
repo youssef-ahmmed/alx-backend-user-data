@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Regex-ing"""
 import logging
+import os
 import re
 from typing import Tuple, List
+
+import mysql.connector
+from mysql.connector.connection import MySQLConnection
 
 PII_FIELDS: Tuple = ("name", "email", "phone", "ssn", "password")
 
@@ -28,6 +32,19 @@ def get_logger() -> logging.Logger:
     logger.addHandler(handler)
 
     return logger
+
+
+def get_db() -> MySQLConnection:
+    """Get the db parameters from env variables"""
+    db = mysql.connector.connect(
+        host=os.getenv("PERSONAL_DATA_DB_HOST", "localhost"),
+        port=3306,
+        user=os.getenv("PERSONAL_DATA_DB_USERNAME", "root"),
+        password=os.getenv("PERSONAL_DATA_DB_PASSWORD", ""),
+        database=os.getenv("PERSONAL_DATA_DB_NAME")
+    )
+
+    return db
 
 
 class RedactingFormatter(logging.Formatter):
