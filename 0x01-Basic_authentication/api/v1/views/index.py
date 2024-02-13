@@ -15,7 +15,7 @@ def status() -> Response:
 
 
 @app_views.route('/stats/', strict_slashes=False)
-def stats() -> Response:
+def stats() -> str:
     """ GET /api/v1/stats
     Return:
       - the number of each objects
@@ -26,7 +26,7 @@ def stats() -> Response:
 
 
 @app_views.route('/unauthorized', strict_slashes=False)
-def unauthorized() -> Response:
+def unauthorized() -> str:
     """ Get /api/v1/unauthorized
     Return:
         - raising 401 status error
@@ -35,7 +35,7 @@ def unauthorized() -> Response:
 
 
 @app_views.route('/forbidden', strict_slashes=False)
-def forbidden() -> Response:
+def forbidden() -> str:
     """ Get /api/v1/unauthorized
     Return:
         - raising 403 status error
