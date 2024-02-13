@@ -23,3 +23,12 @@ def stats() -> Response:
     from models.user import User
     stats = {'users': User.count()}
     return jsonify(stats)
+
+
+@app_views.route('/unauthorized', strict_slashes=False)
+def unauthorized() -> Response:
+    """ Get /api/v1/unauthorized
+    Return:
+        - raising 401 status error
+    """
+    return abort(401)
