@@ -32,3 +32,12 @@ def unauthorized() -> Response:
         - raising 401 status error
     """
     return abort(401)
+
+
+@app_views.route('/forbidden', strict_slashes=False)
+def forbidden() -> Response:
+    """ Get /api/v1/unauthorized
+    Return:
+        - raising 403 status error
+    """
+    return abort(403)
