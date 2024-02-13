@@ -41,6 +41,6 @@ class BasicAuth(Auth):
         if (not decoded_base64_authorization_header
                 or type(decoded_base64_authorization_header) != str
                 or decoded_base64_authorization_header.find(":") == -1):
-            return None
+            return None, None
 
         return tuple(decoded_base64_authorization_header.split(':'))
