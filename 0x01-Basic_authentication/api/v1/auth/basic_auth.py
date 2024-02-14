@@ -49,7 +49,7 @@ class BasicAuth(Auth):
                 or decoded_base64_authorization_header.find(":") == -1):
             return None, None
 
-        return tuple(decoded_base64_authorization_header.split(':'))
+        return tuple(decoded_base64_authorization_header.split(":", 1))
 
     def user_object_from_credentials(
             self,
