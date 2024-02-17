@@ -12,7 +12,7 @@ from models.user import User
 def auth_session() -> str:
     """ POST /api/v1/auth_session/login
     Return:
-
+        response with cookie set
     """
     user_email = request.form.get("email")
     if not user_email:
@@ -25,9 +25,6 @@ def auth_session() -> str:
     users = User.search({"email": user_email})
     if not users:
         return jsonify({"error": "no user found for this email"}), 404
-
-    if not users[0].is_valid_password(user_pwd):
-        return jsonify({"error": "wrong password"}), 401
 
     for user in users:
         if user.is_valid_password(user_pwd):
