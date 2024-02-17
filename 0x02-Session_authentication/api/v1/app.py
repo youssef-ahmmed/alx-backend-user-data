@@ -55,13 +55,14 @@ def handle_auth() -> None:
         return
 
     excluded_list = ['/api/v1/status/', '/api/v1/unauthorized/',
-                     '/api/v1/forbidden/']
+                     '/api/v1/forbidden/', '/api/v1/auth_session/login/']
     require_auth = auth.require_auth(request.path, excluded_list)
     if not require_auth:
         return
 
     auth_header = auth.authorization_header(request)
-    if not auth_header:
+    auth_cookie = auth.session_cookie(request)
+    if not auth_header and not auth_cookie:
         abort(401)
 
     request.current_user = auth.current_user(request)
