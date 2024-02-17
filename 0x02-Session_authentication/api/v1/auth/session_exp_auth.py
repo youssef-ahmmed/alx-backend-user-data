@@ -26,7 +26,7 @@ class SessionExpAuth(SessionAuth):
         return session_id
 
     def user_id_for_session_id(self, session_id=None):
-        """"""
+        """ Get the allowed user id only"""
         if not session_id:
             return None
 
