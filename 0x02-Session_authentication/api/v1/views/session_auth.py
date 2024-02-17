@@ -28,14 +28,16 @@ def auth_session() -> str:
 
     user = users[0]
 
-    is_valid_pwd = user.is_valid_password(password)
+    is_valid_pwd = user.is_valid_password(user_pwd)
 
     if not is_valid_pwd:
         return jsonify({"error": "wrong password"}), 401
 
     from api.v1.app import auth
-    sessionId = auth.create_session(user.id)
-    user_response = jsonify(user.to_json())
-    user_response.set_cookie(os.getenv('SESSION_NAME'), sessionId)
+    session_id = auth.create_session(user.id)
+    session_name = getenv('SESSION_NAME')
 
-    return user_response
+    response = jsonify(user.to_json())
+    response.set_cookie(session_name, session_id)
+
+    return response
