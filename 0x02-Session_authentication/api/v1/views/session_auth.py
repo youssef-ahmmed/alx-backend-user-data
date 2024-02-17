@@ -46,7 +46,7 @@ def auth_session() -> str:
 def logout() -> str:
     """ DELETE /api/v1/auth_session/logout
     Return:
-
+        not found or empty json
     """
     from api.v1.app import auth
 
