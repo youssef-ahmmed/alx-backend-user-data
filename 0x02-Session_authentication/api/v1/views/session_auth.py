@@ -2,7 +2,7 @@
 """ Module for Session authentication view"""
 
 from api.v1.views import app_views
-from flask import jsonify, request, Response
+from flask import jsonify, request
 from os import getenv
 
 from models.user import User
@@ -26,14 +26,16 @@ def auth_session() -> str:
     if not users:
         return jsonify({"error": "no user found for this email"}), 404
 
-    for user in users:
-        if user.is_valid_password(user_pwd):
-            from api.v1.app import auth
-            session_id = auth.create_session(user.id)
-            session_name = getenv("SESSION_NAME")
+    user = users[0]
 
-            response = jsonify(user.to_json())
-            response.set_cookie(session_name, session_id)
-            return response
+    is_valid_pwd = user.is_valid_password(password)
 
-    return jsonify({"error": "wrong password"}), 401
+    if not is_valid_pwd:
+        return jsonify({"error": "wrong password"}), 401
+
+    from api.v1.app import auth
+    sessionId = auth.create_session(user.id)
+    user_response = jsonify(user.to_json())
+    user_response.set_cookie(os.getenv('SESSION_NAME'), sessionId)
+
+    return user_response
