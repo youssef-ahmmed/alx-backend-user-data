@@ -12,6 +12,8 @@ class SessionDBAuth(SessionExpAuth):
         """ Creates and stores new instance of UserSession
             and returns the Session ID"""
         session_id = super().create_session(user_id)
+        if not session_id:
+            return None
 
         user = UserSession(
             **{"session_id": session_id, "user_id": user_id}
