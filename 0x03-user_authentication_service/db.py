@@ -51,9 +51,9 @@ class DB:
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """Update user by id with input args"""
-        try:
-            user_by_id = self.find_user_by(id=user_id)
-        except NoResultFound:
+        user_by_id = self.find_user_by(id=user_id)
+
+        if not user_by_id:
             return None
 
         for key, value in kwargs.items():
