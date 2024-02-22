@@ -48,3 +48,13 @@ class DB:
             raise NoResultFound
 
         return filtered_user
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """Update user by id with input args"""
+        try:
+            user_by_id = self.find_user_by(id=user_id)
+            for key, value in kwargs.items():
+                setattr(user_by_id, key, value)
+            self._session.commit()
+        except NoResultFound:
+            raise ValueError
