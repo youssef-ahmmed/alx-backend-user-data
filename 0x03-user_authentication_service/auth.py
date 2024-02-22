@@ -69,4 +69,8 @@ class Auth:
 
     def destroy_session(self, user_id: int) -> None:
         """Delete the session id of existing user"""
-        return self._db.update_user(user_id, session_id=None)
+        try:
+            self._db.update_user(user_id, session_id=None)
+        except ValueError:
+            pass
+        return None
