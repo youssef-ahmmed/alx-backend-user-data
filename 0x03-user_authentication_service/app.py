@@ -9,7 +9,7 @@ app.url_map.strict_slashes = False
 
 
 @app.route("/", methods=["GET"])
-def index():
+def index() -> str:
     """GET /
     Return:
         - The home page's payload.
@@ -18,7 +18,7 @@ def index():
 
 
 @app.route("/users", methods=["POST"])
-def register():
+def register() -> str:
     """POST /users
     Return:
         - Success creation, 201
