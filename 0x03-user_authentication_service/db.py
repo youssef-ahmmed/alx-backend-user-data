@@ -37,3 +37,11 @@ class DB:
         self._session.add(user)
         self._session.commit()
         return user
+
+    def find_user_by(self, **kwargs) -> User:
+        """Get user filtered by input args"""
+        filtered_user = self._session.query(User).filter_by(**kwargs).first()
+        if not filtered_user:
+            raise NoResultFound
+
+        return filtered_user
