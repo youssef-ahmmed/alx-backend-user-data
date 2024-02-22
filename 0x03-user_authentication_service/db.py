@@ -51,10 +51,15 @@ class DB:
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """Update user by id with input args"""
-        try:
-            user_by_id = self.find_user_by(id=user_id)
-            for key, value in kwargs.items():
+        user_by_id = self.find_user_by(id=user_id)
+
+        if not user_by_id:
+            return None
+
+        for key, value in kwargs.items():
+            if hasattr(user_by_id, key):
                 setattr(user_by_id, key, value)
-            self._session.commit()
-        except NoResultFound:
-            raise ValueError
+            else:
+                raise ValueError
+
+        self._session.commit()
