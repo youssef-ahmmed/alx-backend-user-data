@@ -2,7 +2,7 @@
 """Auth module
 """
 import uuid
-from typing import Optional
+from typing import Union
 
 import bcrypt
 from sqlalchemy.orm.exc import NoResultFound
@@ -58,7 +58,7 @@ class Auth:
         except NoResultFound:
             return None
 
-    def get_user_from_session_id(self, session_id: str) -> Optional[User, None]:
+    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
         """Get user by session id"""
         if not session_id:
             return None
